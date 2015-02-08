@@ -41,8 +41,8 @@ public class CmdClaim extends PlotCommand {
 
                     int plotLimit = getPlotLimit(player);
 
-                    short plotsOwned = manager.getNbOwnedPlot(player.getUniqueId(), world.getName().toLowerCase());
-                    
+                    int plotsOwned = manager.getNbOwnedPlot(player.getUniqueId(), world.getName().toLowerCase());
+
                     if (playerName.equals(player.getName()) && plotLimit != -1 && plotsOwned >= plotLimit) {
                         player.sendMessage("§c" + C("MsgAlreadyReachedMaxPlots") + " (" + plotsOwned + "/" + getPlotLimit(player)
                                            + "). " + C("WordUse") + " §c/plotme home§r " + C("MsgToGetToIt"));
