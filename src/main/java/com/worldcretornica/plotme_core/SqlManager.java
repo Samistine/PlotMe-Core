@@ -498,11 +498,7 @@ public class SqlManager {
     public void addPlot(Plot plot, int idX, int idZ, IWorld world) {
         PlotMeCoreManager manager = PlotMeCoreManager.getInstance();
         
-        addPlot(plot, idX, idZ,
-                manager.topX(plot.getId(), world),
-                manager.bottomX(plot.getId(), world),
-                manager.topZ(plot.getId(), world),
-                manager.bottomZ(plot.getId(), world));
+        addPlot(plot, idX, idZ, manager.topX(plot.getId(), world), manager.bottomX(plot.getId(), world), manager.topZ(plot.getId(), world), manager.bottomZ(plot.getId(), world));
     }
 
     public void addPlot(Plot plot, int idX, int idZ, int topX, int bottomX, int topZ, int bottomZ) {
@@ -526,9 +522,7 @@ public class SqlManager {
 
             ps.setInt(5, topX);
             ps.setInt(6, bottomX);
-            //noinspection SuspiciousNameCombination
             ps.setInt(7, topZ);
-            //noinspection SuspiciousNameCombination
             ps.setInt(8, bottomZ);
             ps.setString(9, ((BukkitBiome) plot.getBiome()).getBiome().name());
             ps.setDate(10, plot.getExpiredDate());
@@ -580,7 +574,7 @@ public class SqlManager {
                 }
             }
             
-            if (plot.getOwner() != null && !plot.getOwner().isEmpty() && plot.getOwnerId() == null) {
+            if (!plot.getOwner().isEmpty() && plot.getOwnerId() == null) {
                 fetchUUIDAsync(idX, idZ, plot.getWorld().toLowerCase(), "owner", plot.getOwner());
             }
 
@@ -1007,10 +1001,8 @@ public class SqlManager {
 
                 for (String id : plots.keySet()) {
                     pmi.addPlot(id, plots.get(id));
-                    plugin.getServerBridge().getEventFactory()
-                            .callPlotLoadedEvent(plugin, plugin.getServerBridge().getWorld(worldName), plots.get(id));
+                    plugin.getServerBridge().getEventFactory().callPlotLoadedEvent(plugin, plugin.getServerBridge().getWorld(worldName), plots.get(id));
                 }
-
                 plugin.getServerBridge().getEventFactory().callPlotWorldLoadEvent(worldName, pmi.getNbPlots());
             }
         });
@@ -1772,12 +1764,10 @@ public class SqlManager {
 
                     //Remove duplicated names
                     executesql("CREATE TABLE IF NOT EXISTS `TEMP2PLOTMEALLOWED` (`idX` INTEGER,`idZ` INTEGER,`world` varchar(32) NOT NULL,`player` varchar(32) NOT NULL,`playerid` blob(16),PRIMARY KEY (idX, idZ, world, player) );");
-                    executesql("INSERT INTO TEMP2PLOTMEALLOWED(idX, idZ, world, player, playerid) " +
-                            "SELECT idX, idZ, world, lower(player), playerid " + 
+                    executesql("INSERT INTO TEMP2PLOTMEALLOWED(idX, idZ, world, player, playerid) SELECT idX, idZ, world, lower(player), playerid " +
                             "FROM plotmeAllowed GROUP BY idX, idZ, world, lower(player), playerid ");
                     executesql("DELETE FROM plotmeAllowed");
-                    executesql("INSERT INTO plotmeAllowed(idX, idZ, world, player, playerid) " +
-                            "SELECT idX, idZ, world, player, playerid FROM TEMP2PLOTMEALLOWED");
+                    executesql("INSERT INTO plotmeAllowed(idX, idZ, world, player, playerid) SELECT idX, idZ, world, player, playerid FROM TEMP2PLOTMEALLOWED");
 
                     executesql("DROP TABLE IF EXISTS TEMP2PLOTMEALLOWED");
 
