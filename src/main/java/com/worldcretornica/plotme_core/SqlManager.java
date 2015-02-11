@@ -335,8 +335,7 @@ public class SqlManager {
 
                     int size = 0;
                     while (setPlots.next()) {
-                        int idX = setPlots.getInt("idX");
-                        int idZ = setPlots.getInt("idZ");
+                        PlotId id = new PlotId(setPlots.getInt("idX"), setPlots.getInt("idZ"));
                         String owner = setPlots.getString("owner");
                         String world = setPlots.getString("world");
                         int topX = setPlots.getInt("topX");
@@ -373,8 +372,8 @@ public class SqlManager {
                             currentbidderid = UUIDFetcher.fromBytes(byBidder);
                         }
 
-                        setAllowed = slAllowed.executeQuery("SELECT * FROM plotmeAllowed WHERE idX = '" + idX + 
-                                "' AND idZ = '" + idZ + "' AND world = '" + world + "'");
+                        setAllowed = slAllowed.executeQuery("SELECT * FROM plotmeAllowed WHERE idX = '" + id.getX() +
+                                "' AND idZ = '" + id.getZ() + "' AND world = '" + world + "'");
 
                         while (setAllowed.next()) {
                             byte[] byPlayerId = setAllowed.getBytes("playerid");
@@ -386,7 +385,7 @@ public class SqlManager {
                         }
 
                         setAllowed.close();
-                        setDenied = slDenied.executeQuery("SELECT * FROM plotmeDenied WHERE idX = '" + idX + "' AND idZ = '" + idZ + "' AND world = '" + world + "'");
+                        setDenied = slDenied.executeQuery("SELECT * FROM plotmeDenied WHERE idX = '" + id.getX() + "' AND idZ = '" + id.getZ() + "' AND world = '" + world + "'");
 
                         while (setDenied.next()) {
                             byte[] byPlayerId = setDenied.getBytes("playerid");
@@ -398,9 +397,9 @@ public class SqlManager {
                         }
 
                         setDenied.close();
-                        
-                        setMetadata = slMetadata.executeQuery("SELECT pluginname, propertyname, propertyvalue FROM plotmeMetadata WHERE idX = '" + idX + 
-                                "' AND idZ = '" + idZ + "' AND world = '" + world + "'");
+
+                        setMetadata = slMetadata.executeQuery("SELECT pluginname, propertyname, propertyvalue FROM plotmeMetadata WHERE idX = '" + id.getX() +
+                                "' AND idZ = '" + id.getZ() + "' AND world = '" + world + "'");
 
                         while (setMetadata.next()) {
                             String pluginname = setMetadata.getString("pluginname");
@@ -414,11 +413,10 @@ public class SqlManager {
 
                         setMetadata.close();
 
-                        Plot plot = new Plot(plugin, owner, ownerId, world, biome,
-                                             expireddate, finished, allowed, idX + ";" + idZ, customprice,
+                        Plot plot = new Plot(plugin, owner, ownerId, world, biome, expireddate, finished, allowed, id, customprice,
                                              forsale, finisheddate, protect, currentbidder, currentbidderid, currentbid,
                                              auctionned, denied, metadata);
-                        addPlot(plot, idX, idZ, topX, bottomX, topZ, bottomZ);
+                        addPlot(plot, id, topX, bottomX, topZ, bottomZ);
 
                         size++;
                     }
@@ -470,13 +468,13 @@ public class SqlManager {
         }
     }
 
-    public void addPlot(Plot plot, int idX, int idZ, IWorld world) {
+    public void addPlot(Plot plot, PlotId id, IWorld world) {
         PlotMeCoreManager manager = PlotMeCoreManager.getInstance();
-        
-        addPlot(plot, idX, idZ, manager.topX(plot.getId(), world), manager.bottomX(plot.getId(), world), manager.topZ(plot.getId(), world), manager.bottomZ(plot.getId(), world));
+
+        addPlot(plot, id, manager.topX(plot.getId(), world), manager.bottomX(plot.getId(), world), manager.topZ(plot.getId(), world), manager.bottomZ(plot.getId(), world));
     }
 
-    public void addPlot(Plot plot, int idX, int idZ, int topX, int bottomX, int topZ, int bottomZ) {
+    public void addPlot(Plot plot, PlotId id, int topX, int bottomX, int topZ, int bottomZ) {
         PreparedStatement ps = null;
         StringBuilder strSql = new StringBuilder();
 
@@ -490,8 +488,8 @@ public class SqlManager {
             strSql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             ps = conn.prepareStatement(strSql.toString());
-            ps.setInt(1, idX);
-            ps.setInt(2, idZ);
+            ps.setInt(1, id.getX());
+            ps.setInt(2, id.getZ());
             ps.setString(3, plot.getOwner());
             ps.setString(4, plot.getWorld().toLowerCase());
 
@@ -527,7 +525,7 @@ public class SqlManager {
             if (allowedlist != null && allowedlist.getAllPlayers() != null) {
                 HashMap<String, UUID> allowed = allowedlist.getAllPlayers();
                 for (String key : allowed.keySet()) {
-                    addPlotAllowed(key, allowed.get(key), idX, idZ, plot.getWorld());
+                    addPlotAllowed(key, allowed.get(key), id, plot.getWorld());
                 }
             }
 
@@ -535,7 +533,7 @@ public class SqlManager {
             if (deniedlist != null && deniedlist.getAllPlayers() != null) {
                 HashMap<String, UUID> denied = deniedlist.getAllPlayers();
                 for (String key : denied.keySet()) {
-                    addPlotDenied(key, denied.get(key), idX, idZ, plot.getWorld());
+                    addPlotDenied(key, denied.get(key), id, plot.getWorld());
                 }
             }
             
@@ -544,17 +542,17 @@ public class SqlManager {
                 for (String pluginname : metadata.keySet()) {
                     Map<String, String> pluginproperties = metadata.get(pluginname);
                     for (String propertyname : pluginproperties.keySet()) {
-                        savePlotProperty(idX, idZ, plot.getWorld().toLowerCase(), pluginname, propertyname, pluginproperties.get(propertyname));
+                        savePlotProperty(id, plot.getWorld().toLowerCase(), pluginname, propertyname, pluginproperties.get(propertyname));
                     }
                 }
             }
             
             if (!plot.getOwner().isEmpty() && plot.getOwnerId() == null) {
-                fetchUUIDAsync(idX, idZ, plot.getWorld().toLowerCase(), "owner", plot.getOwner());
+                fetchUUIDAsync(id, plot.getWorld().toLowerCase(), "owner", plot.getOwner());
             }
 
             if (plot.getCurrentBidder() != null && !plot.getCurrentBidder().isEmpty() && plot.getCurrentBidderId() == null) {
-                fetchUUIDAsync(idX, idZ, plot.getWorld().toLowerCase(), "bidder", plot.getCurrentBidder());
+                fetchUUIDAsync(id, plot.getWorld().toLowerCase(), "bidder", plot.getCurrentBidder());
             }
 
         } catch (SQLException ex) {
@@ -572,7 +570,7 @@ public class SqlManager {
         }
     }
 
-    public void updatePlot(int idX, int idZ, String world, String field, Object value) {
+    public void updatePlot(PlotId id, String world, String field, Object value) {
         PreparedStatement ps = null;
 
         //Plots
@@ -581,18 +579,18 @@ public class SqlManager {
             ps = conn.prepareStatement("UPDATE plotmePlots SET " + field + " = ? " + "WHERE idX = ? AND idZ = ? AND world = ?");
 
             ps.setObject(1, value);
-            ps.setInt(2, idX);
-            ps.setInt(3, idZ);
+            ps.setInt(2, id.getX());
+            ps.setInt(3, id.getZ());
             ps.setString(4, world.toLowerCase());
 
             ps.executeUpdate();
             conn.commit();
 
             if ("owner".equalsIgnoreCase(field)) {
-                fetchUUIDAsync(idX, idZ, world, "owner", value.toString());
+                fetchUUIDAsync(id, world, "owner", value.toString());
             } else if ("currentbidder".equalsIgnoreCase(field)) {
                 if (value != null) {
-                    fetchUUIDAsync(idX, idZ, world, "bidder", value.toString());
+                    fetchUUIDAsync(id, world, "bidder", value.toString());
                 }
             }
         } catch (SQLException ex) {
@@ -610,7 +608,7 @@ public class SqlManager {
         }
     }
 
-    public void addPlotAllowed(String player, UUID uuid, int idX, int idZ, String world) {
+    public void addPlotAllowed(String player, UUID uuid, PlotId id, String world) {
         PreparedStatement ps = null;
 
         //Allowed
@@ -618,15 +616,15 @@ public class SqlManager {
             Connection conn = getConnection();
             ps = conn.prepareStatement("INSERT INTO plotmeAllowed (idX, idZ, player, world, playerid) VALUES (?,?,?,?,?)");
 
-            ps.setInt(1, idX);
-            ps.setInt(2, idZ);
+            ps.setInt(1, id.getX());
+            ps.setInt(2, id.getZ());
             ps.setString(3, player);
             ps.setString(4, world.toLowerCase());
             if (uuid != null) {
                 ps.setBytes(5, UUIDFetcher.toBytes(uuid));
             } else {
                 ps.setBytes(5, null);
-                fetchUUIDAsync(idX, idZ, world, "allowed", player);
+                fetchUUIDAsync(id, world, "allowed", player);
             }
 
             ps.executeUpdate();
@@ -647,7 +645,7 @@ public class SqlManager {
         }
     }
 
-    public void addPlotDenied(String player, UUID playerid, int idX, int idZ, String world) {
+    public void addPlotDenied(String player, UUID playerid, PlotId id, String world) {
         PreparedStatement ps = null;
 
         //Denied
@@ -655,15 +653,15 @@ public class SqlManager {
             Connection conn = getConnection();
             ps = conn.prepareStatement("INSERT INTO plotmeDenied (idX, idZ, player, world, playerid) VALUES (?,?,?,?,?)");
 
-            ps.setInt(1, idX);
-            ps.setInt(2, idZ);
+            ps.setInt(1, id.getX());
+            ps.setInt(2, id.getZ());
             ps.setString(3, player);
             ps.setString(4, world.toLowerCase());
             if (playerid != null) {
                 ps.setBytes(5, UUIDFetcher.toBytes(playerid));
             } else {
                 ps.setBytes(5, null);
-                fetchUUIDAsync(idX, idZ, world, "denied", player);
+                fetchUUIDAsync(id, world, "denied", player);
             }
 
             ps.executeUpdate();
@@ -684,38 +682,38 @@ public class SqlManager {
         }
     }
 
-    public void deletePlot(int idX, int idZ, String world) {
+    public void deletePlot(PlotId id, String world) {
         PreparedStatement ps = null;
         try {
             Connection conn = getConnection();
 
             ps = conn.prepareStatement("DELETE FROM plotmeAllowed WHERE idX = ? and idZ = ? and LOWER(world) = ?");
-            ps.setInt(1, idX);
-            ps.setInt(2, idZ);
+            ps.setInt(1, id.getX());
+            ps.setInt(2, id.getZ());
             ps.setString(3, world.toLowerCase());
             ps.executeUpdate();
             ps.close();
             conn.commit();
 
             ps = conn.prepareStatement("DELETE FROM plotmeDenied WHERE idX = ? and idZ = ? and LOWER(world) = ?");
-            ps.setInt(1, idX);
-            ps.setInt(2, idZ);
+            ps.setInt(1, id.getX());
+            ps.setInt(2, id.getZ());
             ps.setString(3, world.toLowerCase());
             ps.executeUpdate();
             ps.close();
             conn.commit();
 
             ps = conn.prepareStatement("DELETE FROM plotmeMetadata WHERE idX = ? and idZ = ? and LOWER(world) = ?");
-            ps.setInt(1, idX);
-            ps.setInt(2, idZ);
+            ps.setInt(1, id.getX());
+            ps.setInt(2, id.getZ());
             ps.setString(3, world.toLowerCase());
             ps.executeUpdate();
             ps.close();
             conn.commit();
             
             ps = conn.prepareStatement("DELETE FROM plotmePlots WHERE idX = ? and idZ = ? and LOWER(world) = ?");
-            ps.setInt(1, idX);
-            ps.setInt(2, idZ);
+            ps.setInt(1, id.getX());
+            ps.setInt(2, id.getZ());
             ps.setString(3, world.toLowerCase());
             ps.executeUpdate();
             ps.close();
@@ -809,7 +807,7 @@ public class SqlManager {
      * @param id plot id
      * @return the plot
      */
-    public Plot getPlot(String world, String id) {
+    public Plot getPlot(String world, PlotId id) {
         Plot plot = null;
         PreparedStatement statementPlot = null;
         PreparedStatement statementAllowed = null;
@@ -820,8 +818,8 @@ public class SqlManager {
         ResultSet setDenied = null;
         ResultSet setMetadata = null;
 
-        int idX = PlotMeCoreManager.getInstance().getIdX(id);
-        int idZ = PlotMeCoreManager.getInstance().getIdZ(id);
+        int idX = id.getX();
+        int idZ = id.getZ();
 
         try {
             Connection conn = getConnection();
@@ -926,9 +924,8 @@ public class SqlManager {
                 setMetadata.close();
 
                 plot = new Plot(plugin, owner, ownerId, world, biome, expiredDate, finished, allowed,
-                                idX + ";" + idZ, customPrice, forSale, finishedDate, protect,
-                                currentBidder, currentBidderId, currentBid, auctioned, denied,
-                                metadata);
+                        id, customPrice, forSale, finishedDate, protect,
+                        currentBidder, currentBidderId, currentBid, auctioned, denied, metadata);
             }
         } catch (SQLException ex) {
             plugin.getLogger().severe("Plot load Exception :");
@@ -975,11 +972,11 @@ public class SqlManager {
             public void run() {
                 plugin.getLogger().info("Starting to load plots for world " + worldName);
 
-                HashMap<String, Plot> plots = getPlots(worldName);
+                HashMap<PlotId, Plot> plots = getPlots(worldName);
 
                 PlotMapInfo pmi = PlotMeCoreManager.getInstance().getMap(worldName);
 
-                for (String id : plots.keySet()) {
+                for (PlotId id : plots.keySet()) {
                     pmi.addPlot(id, plots.get(id));
                     plugin.getServerBridge().getEventFactory().callPlotLoadedEvent(plugin, plugin.getServerBridge().getWorld(worldName), plots.get(id));
                 }
@@ -989,8 +986,8 @@ public class SqlManager {
     }
 
     //Do NOT call from the main thread
-    public HashMap<String, Plot> getPlots(String world) {
-        HashMap<String, Plot> ret = new HashMap<>();
+    public HashMap<PlotId, Plot> getPlots(String world) {
+        HashMap<PlotId, Plot> ret = new HashMap<>();
         Statement statementPlot = null;
         Statement statementAllowed = null;
         Statement statementDenied = null;
@@ -1007,8 +1004,7 @@ public class SqlManager {
             setPlots = statementPlot.executeQuery("SELECT * FROM plotmePlots WHERE LOWER(world) = '" + world + "'");
 
             while (setPlots.next()) {
-                int idX = setPlots.getInt("idX");
-                int idZ = setPlots.getInt("idZ");
+                PlotId id = new PlotId(setPlots.getInt("idX"), setPlots.getInt("idZ"));
                 String owner = setPlots.getString("owner");
                 String biome = setPlots.getString("biome");
                 Date expiredDate = null;
@@ -1042,8 +1038,8 @@ public class SqlManager {
                 }
 
                 statementAllowed = conn.createStatement();
-                setAllowed = statementAllowed.executeQuery("SELECT * FROM plotmeAllowed WHERE idX = '" + idX + 
-                        "' AND idZ = '" + idZ + "' AND LOWER(world) = '" + world + "'");
+                setAllowed = statementAllowed.executeQuery("SELECT * FROM plotmeAllowed WHERE idX = '" + id.getX() +
+                        "' AND idZ = '" + id.getZ() + "' AND LOWER(world) = '" + world + "'");
 
                 while (setAllowed.next()) {
                     byte[] byPlayerId = setAllowed.getBytes("playerid");
@@ -1057,8 +1053,8 @@ public class SqlManager {
                 setAllowed.close();
 
                 statementDenied = conn.createStatement();
-                setDenied = statementDenied.executeQuery("SELECT * FROM plotmeDenied WHERE idX = '" + idX + 
-                        "' AND idZ = '" + idZ + "' AND LOWER(world) = '" + world + "'");
+                setDenied = statementDenied.executeQuery("SELECT * FROM plotmeDenied WHERE idX = '" + id.getX() +
+                        "' AND idZ = '" + id.getZ() + "' AND LOWER(world) = '" + world + "'");
 
                 while (setDenied.next()) {
                     byte[] byPlayerId = setDenied.getBytes("playerid");
@@ -1072,8 +1068,8 @@ public class SqlManager {
                 setDenied.close();
                 
                 statementMetadata = conn.createStatement();
-                setMetadata = statementMetadata.executeQuery("SELECT * FROM plotmeMetadata WHERE idX = '" + idX + 
-                        "' AND idZ = '" + idZ + "' AND LOWER(world) = '" + world + "'");
+                setMetadata = statementMetadata.executeQuery("SELECT * FROM plotmeMetadata WHERE idX = '" + id.getX() +
+                        "' AND idZ = '" + id.getZ() + "' AND LOWER(world) = '" + world + "'");
                 
                 while (setMetadata.next()) {
                     String pluginname = setMetadata.getString("pluginname");
@@ -1087,10 +1083,10 @@ public class SqlManager {
 
                 setMetadata.close();
 
-                Plot plot = new Plot(plugin, owner, ownerId, world, biome, expiredDate, finished, allowed, idX + ";" + idZ,
+                Plot plot = new Plot(plugin, owner, ownerId, world, biome, expiredDate, finished, allowed, id,
                                      customPrice, forSale, finishedDate, protect, currentBidder, currentBidderId, currentBid, 
                                      auctioned, denied, metadata);
-                ret.put(idX + ";" + idZ, plot);
+                ret.put(id, plot);
             }
         } catch (SQLException ex) {
             plugin.getLogger().severe("Load Exception :");
@@ -1169,7 +1165,7 @@ public class SqlManager {
         return nbplots;
     }
 
-    public int getPlotCount(String world, UUID ownerId, String owner) {
+    public int getPlotCount(String world, UUID ownerId) {
         PreparedStatement ps = null;
         ResultSet setNbPlots = null;
         int nbplots = 0;
@@ -1177,15 +1173,9 @@ public class SqlManager {
         try {
             Connection conn = getConnection();
 
-            if (ownerId == null) {
-                ps = conn.prepareStatement("SELECT Count(*) as NbPlot FROM plotmePlots WHERE LOWER(world) = ? AND owner = ?");
-                ps.setString(1, world.toLowerCase());
-                ps.setString(2, owner);
-            } else {
-                ps = conn.prepareStatement("SELECT Count(*) as NbPlot FROM plotmePlots WHERE LOWER(world) = ? AND ownerId = ?");
-                ps.setString(1, world.toLowerCase());
-                ps.setBytes(2, UUIDFetcher.toBytes(ownerId));
-            }
+            ps = conn.prepareStatement("SELECT Count(*) as NbPlot FROM plotmePlots WHERE LOWER(world) = ? AND ownerId = ?");
+            ps.setString(1, world.toLowerCase());
+            ps.setBytes(2, UUIDFetcher.toBytes(ownerId));
 
             setNbPlots = ps.executeQuery();
 
@@ -1306,15 +1296,14 @@ public class SqlManager {
             setPlots = statementPlot.executeQuery();
 
             while (setPlots.next()) {
-                int idX = setPlots.getInt("idX");
-                int idZ = setPlots.getInt("idZ");
+                PlotId id = new PlotId(setPlots.getInt("idX"), setPlots.getInt("idZ"));
                 String owner = setPlots.getString("owner");
 
                 String finisheddate = setPlots.getString("finisheddate");
 
                 Plot plot = new Plot(plugin);
                 plot.setOwner(owner);
-                plot.setId(idX + ";" + idZ);
+                plot.setId(id);
                 plot.setFinishedDate(finisheddate);
 
                 ret.add(plot);
@@ -1363,8 +1352,7 @@ public class SqlManager {
             setPlots = statementPlot.executeQuery();
 
             while (setPlots.next()) {
-                int idX = setPlots.getInt("idX");
-                int idZ = setPlots.getInt("idZ");
+                PlotId id = new PlotId(setPlots.getInt("idX"), setPlots.getInt("idZ"));
                 String owner = setPlots.getString("owner");
 
                 Date expireddate = null;
@@ -1375,7 +1363,7 @@ public class SqlManager {
 
                 Plot plot = new Plot(plugin);
                 plot.setOwner(owner);
-                plot.setId(idX + ";" + idZ);
+                plot.setId(id);
                 plot.setExpiredDate(expireddate);
 
                 ret.add(plot);
@@ -1420,8 +1408,7 @@ public class SqlManager {
             setPlots = statementPlot.executeQuery();
 
             if (setPlots.next()) {
-                int idX = setPlots.getInt("idX");
-                int idZ = setPlots.getInt("idZ");
+                PlotId id = new PlotId(setPlots.getInt("idX"), setPlots.getInt("idZ"));
                 String owner = setPlots.getString("owner");
 
                 Date expireddate = null;
@@ -1432,7 +1419,7 @@ public class SqlManager {
 
                 Plot plot = new Plot(plugin);
                 plot.setOwner(owner);
-                plot.setId(idX + ";" + idZ);
+                plot.setId(id);
                 plot.setExpiredDate(expireddate);
 
                 return plot;
@@ -1464,10 +1451,9 @@ public class SqlManager {
 
             while (rs.next()) {
                 String world = rs.getString("world");
-                int idX = rs.getInt("idX");
-                int idZ = rs.getInt("idZ");
+                PlotId id = new PlotId(rs.getInt("idX"), rs.getInt("idZ"));
 
-                ret.add(getPlot(world, idX + ";" + idZ));
+                ret.add(getPlot(world, id));
             }
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, null, ex);
@@ -1574,8 +1560,7 @@ public class SqlManager {
             setPlots = statementPlot.executeQuery();
 
             while (setPlots.next()) {
-                int idX = setPlots.getInt("idX");
-                int idZ = setPlots.getInt("idZ");
+                PlotId id = new PlotId(setPlots.getInt("idX"), setPlots.getInt("idZ"));
                 String biome = setPlots.getString("biome");
                 Date expireddate = null;
                 try {
@@ -1612,8 +1597,8 @@ public class SqlManager {
 
                 statementAllowed = conn.prepareStatement("SELECT * FROM plotmeAllowed WHERE LOWER(world) = ? AND idX = ? AND idZ = ?");
                 statementAllowed.setString(1, currworld.toLowerCase());
-                statementAllowed.setInt(2, idX);
-                statementAllowed.setInt(3, idZ);
+                statementAllowed.setInt(2, id.getX());
+                statementAllowed.setInt(3, id.getZ());
 
                 ResultSet setAllowed = statementAllowed.executeQuery();
 
@@ -1630,8 +1615,8 @@ public class SqlManager {
 
                 statementDenied = conn.prepareStatement("SELECT * FROM plotmeDenied WHERE LOWER(world) = ? AND idX = ? AND idZ = ?");
                 statementDenied.setString(1, currworld.toLowerCase());
-                statementDenied.setInt(2, idX);
-                statementDenied.setInt(3, idZ);
+                statementDenied.setInt(2, id.getX());
+                statementDenied.setInt(3, id.getZ());
 
                 ResultSet setDenied = statementDenied.executeQuery();
 
@@ -1648,8 +1633,8 @@ public class SqlManager {
                 
                 statementMetadata = conn.prepareStatement("SELECT * FROM plotmeMetadata WHERE LOWER(world) = ? AND idX = ? AND idZ = ?");
                 statementMetadata.setString(1, currworld.toLowerCase());
-                statementMetadata.setInt(2, idX);
-                statementMetadata.setInt(3, idZ);
+                statementMetadata.setInt(2, id.getX());
+                statementMetadata.setInt(3, id.getZ());
                 
                 ResultSet setMetadata = statementMetadata.executeQuery();
                 
@@ -1666,9 +1651,8 @@ public class SqlManager {
                 setMetadata.close();
                 
                 Plot plot = new Plot(plugin, owner, ownerId, currworld, biome, expireddate, finished, allowed,
-                                     idX + ";" + idZ, customprice, forsale, finisheddate, protect,
-                                     currentbidder, currentbidderid, currentbid, auctionned, denied,
-                                     metadata);
+                        id, customprice, forsale, finisheddate, protect,
+                        currentbidder, currentbidderid, currentbid, auctionned, denied, metadata);
 
                 ret.add(plot);
             }
@@ -1715,6 +1699,7 @@ public class SqlManager {
 
     public void plotConvertToUUIDAsynchronously() {
         plugin.getServerBridge().runTaskLaterAsynchronously(new Runnable() {
+            @SuppressWarnings("JpaQueryApiInspection")
             @Override
             public void run() {
                 plugin.getLogger().info("Checking if conversion to UUID needed...");
@@ -2123,7 +2108,7 @@ public class SqlManager {
         }, 20L);
     }
 
-    private void fetchUUIDAsync(final int idX, final int idZ, final String world, final String property, final String name) {
+    private void fetchUUIDAsync(final PlotId id, final String world, final String property, final String name) {
         plugin.getServerBridge().runTaskAsynchronously(new Runnable() {
             @Override
             public void run() {
@@ -2155,22 +2140,22 @@ public class SqlManager {
                     switch (property) {
                         case "owner":
                             ps = conn.prepareStatement(
-                                            "UPDATE plotmePlots SET ownerid = ?, owner = ? WHERE LOWER(owner) = ? AND idX = '" + idX + "' AND idZ = '"
-                                            + idZ + "' AND LOWER(world) = '" + world + "'");
+                                    "UPDATE plotmePlots SET ownerid = ?, owner = ? WHERE LOWER(owner) = ? AND idX = '" + id.getX() + "' AND idZ = '"
+                                            + id.getZ() + "' AND LOWER(world) = '" + world + "'");
                             break;
                         case "bidder":
                             ps = conn.prepareStatement(
                                             "UPDATE plotmePlots SET currentbidderid = ?, currentbidder = ? WHERE LOWER(currentbidder) = ? AND idX = '"
-                                            + idX + "' AND idZ = '" + idZ + "' AND LOWER(world) = '" + world + "'");
+                                                    + id.getX() + "' AND idZ = '" + id.getZ() + "' AND LOWER(world) = '" + world + "'");
                             break;
                         case "allowed":
                             ps = conn.prepareStatement(
-                                            "UPDATE plotmeAllowed SET playerid = ?, player = ? WHERE LOWER(player) = ? AND idX = '" + idX
-                                            + "' AND idZ = '" + idZ + "' AND LOWER(world) = '" + world + "'");
+                                    "UPDATE plotmeAllowed SET playerid = ?, player = ? WHERE LOWER(player) = ? AND idX = '" + id.getX()
+                                            + "' AND idZ = '" + id.getZ() + "' AND LOWER(world) = '" + world + "'");
                             break;
                         case "denied":
-                            ps = conn.prepareStatement("UPDATE plotmeDenied SET playerid = ?, player = ? WHERE LOWER(player) = ? AND idX = '" + idX
-                                                          + "' AND idZ = '" + idZ + "' AND LOWER(world) = '" + world + "'");
+                            ps = conn.prepareStatement("UPDATE plotmeDenied SET playerid = ?, player = ? WHERE LOWER(player) = ? AND idX = '" + id.getX()
+                                    + "' AND idZ = '" + id.getZ() + "' AND LOWER(world) = '" + world + "'");
                             break;
                         default:
                             return;
@@ -2193,7 +2178,7 @@ public class SqlManager {
                     ps.close();
 
                     if (uuid != null) {
-                        Plot plot = PlotMeCoreManager.getInstance().getPlotById(idX + ";" + idZ, world);
+                        Plot plot = PlotMeCoreManager.getInstance().getPlotById(id, world);
 
                         if (plot != null) {
                             switch (property) {
@@ -2290,15 +2275,15 @@ public class SqlManager {
         });
     }
 
-    public boolean savePlotProperty(int idX, int idZ, String world, String pluginname, String property, String value) {
+    public boolean savePlotProperty(PlotId id, String world, String pluginname, String property, String value) {
         PreparedStatement ps = null;
 
         //Plots
         try {
             Connection conn = getConnection();
             ps = conn.prepareStatement("SELECT idX FROM plotmeMetadata WHERE idX = ? AND idZ = ? AND world = ? AND pluginname = ? AND propertyname = ?");
-            ps.setInt(1, idX);
-            ps.setInt(2, idZ);
+            ps.setInt(1, id.getX());
+            ps.setInt(2, id.getZ());
             ps.setString(3, world.toLowerCase());
             ps.setString(4, pluginname);
             ps.setString(5, property);
@@ -2311,8 +2296,8 @@ public class SqlManager {
                 
                 ps = conn.prepareStatement("UPDATE plotmeMetadata SET propertyvalue = ? WHERE idX = ? AND idZ = ? AND world = ? AND pluginname = ? AND propertyname = ?");
                 ps.setString(1, value);
-                ps.setInt(2, idX);
-                ps.setInt(3, idZ);
+                ps.setInt(1, id.getX());
+                ps.setInt(2, id.getZ());
                 ps.setString(4, world.toLowerCase());
                 ps.setString(5, pluginname);
                 ps.setString(6, property);
@@ -2323,8 +2308,8 @@ public class SqlManager {
                 ps.close();
                 
                 ps = conn.prepareStatement("INSERT INTO plotmeMetadata(idX, idZ, world, pluginname, propertyname, propertyvalue) VALUES(?,?,?,?,?,?)");
-                ps.setInt(1, idX);
-                ps.setInt(2, idZ);
+                ps.setInt(1, id.getX());
+                ps.setInt(2, id.getZ());
                 ps.setString(3, world.toLowerCase());
                 ps.setString(4, pluginname);
                 ps.setString(5, property);
