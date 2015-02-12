@@ -184,11 +184,11 @@ public class SqlManager {
             UpdateTables();
 
             if (isUsingMySQL()) {
-                plugin.getLogger().info("Modifying database for MySQL support");
 
                 String sqlitedb = "plots.db";
                 File sqlitefile = new File(plugin.getServerBridge().getDataFolder(), sqlitedb);
                 if (sqlitefile.exists()) {
+                    plugin.getLogger().info("Modifying database for MySQL support");
                     plugin.getLogger().info("Trying to import plots from plots.db");
                     Class.forName(SQLITE_DRIVER);
                     Connection sqliteconn = DriverManager.getConnection("jdbc:sqlite:" + sqlitefile.getPath());
@@ -321,10 +321,10 @@ public class SqlManager {
                 }
             }
         } catch (SQLException ex) {
-            plugin.getLogger().severe("Create Table Exception :");
+            plugin.getLogger().severe("Create table exception :");
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
-            plugin.getLogger().severe("Class Not Found Exception :");
+            plugin.getLogger().severe("Class not found exception :");
             ex.printStackTrace();
         } finally {
             try {
@@ -435,7 +435,7 @@ public class SqlManager {
                     ps.close();
                 }
             } catch (SQLException ex) {
-                plugin.getLogger().severe("Insert Exception (on close) :");
+                plugin.getLogger().severe("Insert exception (on close) :");
                 plugin.getLogger().severe(ex.getMessage());
             }
         }
@@ -465,7 +465,7 @@ public class SqlManager {
                 }
             }
         } catch (SQLException ex) {
-            plugin.getLogger().severe("Insert Exception :");
+            plugin.getLogger().severe("Insert exception :");
             plugin.getLogger().severe(ex.getMessage());
         } finally {
             try {
@@ -473,7 +473,7 @@ public class SqlManager {
                     ps.close();
                 }
             } catch (SQLException ex) {
-                plugin.getLogger().severe("Insert Exception (on close) :");
+                plugin.getLogger().severe("Insert exception (on close) :");
                 plugin.getLogger().severe(ex.getMessage());
             }
         }
@@ -502,7 +502,7 @@ public class SqlManager {
             conn.commit();
 
         } catch (SQLException ex) {
-            plugin.getLogger().severe("Insert Exception :");
+            plugin.getLogger().severe("Insert exception :");
             plugin.getLogger().severe(ex.getMessage());
         } finally {
             try {
@@ -510,7 +510,7 @@ public class SqlManager {
                     ps.close();
                 }
             } catch (SQLException ex) {
-                plugin.getLogger().severe("Insert Exception (on close) :");
+                plugin.getLogger().severe("Insert exception (on close) :");
                 plugin.getLogger().severe(ex.getMessage());
             }
         }
@@ -539,7 +539,7 @@ public class SqlManager {
             conn.commit();
 
         } catch (SQLException ex) {
-            plugin.getLogger().severe("Insert Exception :");
+            plugin.getLogger().severe("Insert exception :");
             plugin.getLogger().severe(ex.getMessage());
         } finally {
             try {
@@ -599,7 +599,7 @@ public class SqlManager {
                     ps.close();
                 }
             } catch (SQLException ex) {
-                plugin.getLogger().severe("Delete Exception (on close) :");
+                plugin.getLogger().severe("Delete exception (on close) :");
                 plugin.getLogger().severe(ex.getMessage());
             }
         }
@@ -633,7 +633,7 @@ public class SqlManager {
                     ps.close();
                 }
             } catch (SQLException ex) {
-                plugin.getLogger().severe("Delete Exception (on close) :");
+                plugin.getLogger().severe("Delete exception (on close) :");
                 plugin.getLogger().severe(ex.getMessage());
             }
         }
@@ -659,7 +659,7 @@ public class SqlManager {
             conn.commit();
 
         } catch (SQLException ex) {
-            plugin.getLogger().severe("Delete Exception :");
+            plugin.getLogger().severe("Delete exception :");
             plugin.getLogger().severe(ex.getMessage());
         } finally {
             try {
@@ -667,7 +667,7 @@ public class SqlManager {
                     ps.close();
                 }
             } catch (SQLException ex) {
-                plugin.getLogger().severe("Delete Exception (on close) :");
+                plugin.getLogger().severe("Delete exception (on close) :");
                 plugin.getLogger().severe(ex.getMessage());
             }
         }
@@ -960,7 +960,7 @@ public class SqlManager {
                 ret.put(id, plot);
             }
         } catch (SQLException ex) {
-            plugin.getLogger().severe("Load Exception :");
+            plugin.getLogger().severe("Load exception :");
             plugin.getLogger().severe(ex.getMessage());
         } finally {
             try {
