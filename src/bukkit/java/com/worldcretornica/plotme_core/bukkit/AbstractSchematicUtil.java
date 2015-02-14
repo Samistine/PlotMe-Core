@@ -3,14 +3,14 @@ package com.worldcretornica.plotme_core.bukkit;
 import com.worldcretornica.schematic.*;
 import com.worldcretornica.schematic.jnbt.*;
 
-import org.bukkit.*;
-
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import org.bukkit.Location;
 
 public abstract class AbstractSchematicUtil {
     
