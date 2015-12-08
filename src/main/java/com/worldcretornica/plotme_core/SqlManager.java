@@ -1569,9 +1569,9 @@ public class SqlManager {
             
             if (playerId == null) {
                 if (ownedonly) {
-                    query += "A.owner = ? ";
+                    query += "UPPER(A.owner) = UPPER(?) ";
                 } else {
-                    query += "(A.owner = ? OR B.player = ?) ";
+                    query += "(UPPER(A.owner) = UPPER(?) OR UPPER(B.player) = UPPER(?)) ";
                 }
             } else {
                 if (ownedonly) {
