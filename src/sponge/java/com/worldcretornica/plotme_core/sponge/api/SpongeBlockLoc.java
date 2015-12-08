@@ -4,13 +4,13 @@ import com.worldcretornica.plotme_core.api.IBiome;
 import com.worldcretornica.plotme_core.api.IBlock;
 import com.worldcretornica.plotme_core.api.ILocation;
 import com.worldcretornica.plotme_core.api.IWorld;
-import org.spongepowered.api.block.BlockLoc;
+//import org.spongepowered.api.block.BlockLoc;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.biome.BiomeTypes;
 
-public class SpongeBlockLoc implements IBlock {
+public class SpongeBlockLoc /*implements IBlock*/ {
 
-    private final BlockLoc block;
+   /* private final BlockLoc block;
 
     public SpongeBlockLoc(BlockLoc block) {
         this.block = block;
@@ -68,5 +68,5 @@ public class SpongeBlockLoc implements IBlock {
 
     @Override
     public void setTypeId(int id, boolean applyPhysics) {
-    }
+    }*/
 }

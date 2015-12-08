@@ -1,6 +1,7 @@
 package com.worldcretornica.plotme_core.sponge.api;
 
 import com.flowpowered.math.vector.Vector3d;
+import com.worldcretornica.plotme_core.api.IBiome;
 import com.worldcretornica.plotme_core.api.IBlock;
 import com.worldcretornica.plotme_core.api.ILocation;
 import com.worldcretornica.plotme_core.api.IWorld;
@@ -22,17 +23,17 @@ public class SpongeLocation implements ILocation {
 
     @Override
     public int getBlockX() {
-        return location.getBlock().getX();
+        return location.getBlockX();
     }
 
     @Override
     public int getBlockY() {
-        return location.getBlock().getY();
+        return location.getBlockY();
     }
 
     @Override
     public int getBlockZ() {
-        return location.getBlock().getZ();
+        return location.getBlockZ();
     }
 
     @Override
@@ -70,7 +71,64 @@ public class SpongeLocation implements ILocation {
     
     @Override
     public IBlock getBlock() {
-        return new SpongeBlockLoc(location.getBlock());
+        //return new SpongeBlockLoc(location.getBlock());
+        return new IBlock() {
+
+            @Override
+            public ILocation getLocation() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public IWorld getWorld() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public int getX() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public int getY() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public int getZ() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public int getTypeId() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public IBiome getBiome() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void setBiome(IBiome biome) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public boolean setTypeIdAndData(short id, byte data, boolean applyPhysics) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public byte getData() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void setTypeId(int id, boolean applyPhysics) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
     }
     
     @Override

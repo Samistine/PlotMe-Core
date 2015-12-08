@@ -11,7 +11,7 @@ import org.spongepowered.api.util.command.CommandSource;
 import java.util.List;
 
 //TODO Write command class
-public class SpongeCommand implements CommandCallable {
+public class SpongeCommand /*implements CommandCallable*/ {
 
     private final PlotMeCoreManager manager;
     private final PlotMe_Core api;
@@ -37,10 +37,10 @@ public class SpongeCommand implements CommandCallable {
      * @return Whether a command was processed
      * @throws CommandException Thrown on a command error
      */
-    @Override
-    public boolean call(CommandSource source, String arguments, List<String> parents) throws CommandException {
-        return false;
-    }
+//    @Override
+//    public boolean call(CommandSource source, String arguments, List<String> parents) throws CommandException {
+//        return false;
+//    }
 
     /**
      * Test whether this command can probably be executed by the given source.
@@ -53,30 +53,30 @@ public class SpongeCommand implements CommandCallable {
      * @param source The caller of the command
      * @return Whether permission is (probably) granted
      */
-    @Override
-    public boolean testPermission(CommandSource source) {
-        return false;
-    }
+//    @Override
+//    public boolean testPermission(CommandSource source) {
+//        return false;
+//    }
 
     /**
      * Get a short one-line description of this command.
      *
      * @return A description, if available
      */
-    @Override
-    public Optional<String> getShortDescription() {
-        return null;
-    }
+//    @Override
+//    public Optional<String> getShortDescription() {
+//        return null;
+//    }
 
     /**
      * Get a longer help text about this command.
      *
      * @return A help text, if available
      */
-    @Override
-    public Optional<String> getHelp() {
-        return null;
-    }
+//    @Override
+//    public Optional<String> getHelp() {
+//        return null;
+//    }
 
     /**
      * Get the usage string of this command.
@@ -86,10 +86,10 @@ public class SpongeCommand implements CommandCallable {
      *
      * @return A usage string
      */
-    @Override
-    public String getUsage() {
-        return null;
-    }
+//    @Override
+//    public String getUsage() {
+//        return null;
+//    }
 
     /**
      * Get a list of suggestions based on input.
@@ -102,8 +102,8 @@ public class SpongeCommand implements CommandCallable {
      * @return A list of suggestions
      * @throws CommandException Thrown if there was a parsing error
      */
-    @Override
-    public List<String> getSuggestions(CommandSource source, String arguments) throws CommandException {
-        return null;
-    }
+//    @Override
+//    public List<String> getSuggestions(CommandSource source, String arguments) throws CommandException {
+//        return null;
+//    }
 }

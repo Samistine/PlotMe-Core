@@ -51,7 +51,7 @@ public class SpongeServerBridge extends IServerBridge {
 
     @Override
     public IPlayer getPlayer(UUID uuid) {
-        Player player = plugin.getGame().getServer().get().getPlayer(uuid).orNull();
+        Player player = plugin.getGame().getServer().getPlayer(uuid).orNull();
         if (player != null) {
             return new SpongePlayer(player);
         } else {
@@ -61,7 +61,7 @@ public class SpongeServerBridge extends IServerBridge {
 
     @Override
     public IPlayer getPlayerExact(String name) {
-        Player player = plugin.getGame().getServer().get().getPlayer(name).orNull();
+        Player player = plugin.getGame().getServer().getPlayer(name).orNull();
         if (player != null) {
             return new SpongePlayer(player);
         } else {
@@ -73,7 +73,7 @@ public class SpongeServerBridge extends IServerBridge {
     public Collection<IPlayer> getOnlinePlayers() {
         Collection<IPlayer> players = new ArrayList<>();
 
-        for (Player player : plugin.getGame().getServer().get().getOnlinePlayers()) {
+        for (Player player : plugin.getGame().getServer().getOnlinePlayers()) {
             players.add(new SpongePlayer(player));
         }
         return players;
@@ -141,7 +141,7 @@ public class SpongeServerBridge extends IServerBridge {
 
     @Override
     public IWorld getWorld(String worldName) {
-        World world = plugin.getGame().getServer().get().getWorld(worldName).orNull();
+        World world = plugin.getGame().getServer().getWorld(worldName).orNull();
         if (world != null) {
             return new SpongeWorld(world);
         } else {
@@ -152,7 +152,7 @@ public class SpongeServerBridge extends IServerBridge {
     @Override
     public void setupCommands() {
         CommandService cmdService = plugin.getGame().getCommandDispatcher();
-        cmdService.register(plugin, new SpongeCommand(plugin), "plotme");
+        //cmdService.register(plugin, new SpongeCommand(plugin), "plotme");
 
     }
 
@@ -238,7 +238,7 @@ public class SpongeServerBridge extends IServerBridge {
     public Collection<IWorld> getWorlds() {
         Collection<IWorld> worlds = new ArrayList<>();
 
-        for (World world : plugin.getGame().getServer().get().getWorlds()) {
+        for (World world : plugin.getGame().getServer().getWorlds()) {
             worlds.add(new SpongeWorld(world));
         }
         return worlds;

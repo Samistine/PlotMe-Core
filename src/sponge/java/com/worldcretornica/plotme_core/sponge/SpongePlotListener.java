@@ -21,9 +21,9 @@ import org.spongepowered.api.event.block.FloraGrowEvent;
 import org.spongepowered.api.event.block.FluidSpreadEvent;
 import org.spongepowered.api.event.block.LeafDecayEvent;
 import org.spongepowered.api.event.entity.ProjectileLaunchEvent;
-import org.spongepowered.api.event.entity.living.player.PlayerChangeBlockEvent;
-import org.spongepowered.api.event.entity.living.player.PlayerInteractEvent;
-import org.spongepowered.api.util.event.Subscribe;
+//import org.spongepowered.api.event.entity.living.player.PlayerChangeBlockEvent;
+//import org.spongepowered.api.event.entity.living.player.PlayerInteractEvent;
+//import org.spongepowered.api.util.event.Subscribe;
 
 public class SpongePlotListener {
 
@@ -37,7 +37,7 @@ public class SpongePlotListener {
         manager = PlotMeCoreManager.getInstance();
     }
 
-    //This event is triggered for both placing and breaking blocks.
+/*    //This event is triggered for both placing and breaking blocks.
     @Subscribe
     public void onBlockChange(PlayerChangeBlockEvent event) {
         SpongeLocation location = new SpongeLocation(event.getBlock().getLocation());
@@ -145,5 +145,5 @@ public class SpongePlotListener {
                 }
             }
         }
-    }
+    }*/
 }
