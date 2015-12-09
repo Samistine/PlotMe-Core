@@ -8,19 +8,7 @@ import java.util.UUID;
 public class PlayerList {
 
     private PlotMe_Core api;
-    private HashMap<String, UUID> playerList;
-
-    public PlayerList(PlotMe_Core api) {
-        this.api = api;
-    }
-
-    public PlayerList() {
-        playerList = new HashMap<>();
-    }
-
-    public PlayerList(HashMap<String, UUID> players) {
-        playerList = players;
-    }
+    private HashMap<String, UUID> playerList = new HashMap<>();
 
     public void put(String name) {
         put(name, null);
@@ -61,15 +49,15 @@ public class PlayerList {
         return "";
     }
 
-    public Set<String> getPlayers() {
+    public Set<String> getPlayerNames() {
         return playerList.keySet();
     }
 
-    public String getPlayerList() {
+    public String getPlayerNamesAsString() {
         StringBuilder list = new StringBuilder();
 
-        for (String s : playerList.keySet()) {
-            list = list.append(s + ", ");
+        for (String s : getPlayerNames()) {
+            list = list.append(s).append(", ");
         }
         if (list.length() > 1) {
             list = list.delete(list.length() - 2, list.length());

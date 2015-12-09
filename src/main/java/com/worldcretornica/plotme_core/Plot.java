@@ -172,11 +172,11 @@ public class Plot implements Cloneable {
     }
 
     public String getAllowed() {
-        return allowed().getPlayerList();
+        return allowed().getPlayerNamesAsString();
     }
 
     public String getDenied() {
-        return denied().getPlayerList();
+        return denied().getPlayerNamesAsString();
     }
 
     public void addAllowed(String name, UUID uuid) {

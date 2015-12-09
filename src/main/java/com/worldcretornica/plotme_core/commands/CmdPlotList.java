@@ -100,7 +100,7 @@ public class CmdPlotList extends PlotCommand {
                         // Is the name allowed to build there?
                     } else if (plot.isAllowedConsulting(name)) {
                         StringBuilder helpers = new StringBuilder();
-                        for (String allowed : plot.allowed().getPlayers()) {
+                        for (String allowed : plot.allowed().getPlayerNames()) {
                             if (player.getName().equalsIgnoreCase(allowed)) {
                                 if (name.equalsIgnoreCase(player.getName())) {
                                     helpers.append("§b").append("§o").append("You").append("§r").append(", ");

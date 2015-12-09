@@ -35,7 +35,7 @@ public class CmdRemoveAll extends PlotCommand {
                         if (plot.getOwnerId().equals(playerUniqueId) || player.hasPermission(PermissionNames.ADMIN_REMOVE)) {
                             if (plot.allowedcount() > 0) {
 
-                                for (String allowed : plot.allowed().getPlayers()) {
+                                for (String allowed : plot.allowed().getPlayerNames()) {
 
                                     double price = 0.0;
 
