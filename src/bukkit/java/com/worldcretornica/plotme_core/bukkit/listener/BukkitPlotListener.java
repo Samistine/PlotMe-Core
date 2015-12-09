@@ -21,6 +21,7 @@ import org.bukkit.inventory.*;
 
 import java.util.List;
 import java.util.UUID;
+import org.bukkit.Material;
 
 public class BukkitPlotListener implements Listener {
 
@@ -213,7 +214,16 @@ public class BukkitPlotListener implements Listener {
 
         BukkitBlock block = new BukkitBlock(event.getClickedBlock());
         if (manager.isPlotWorld(block.getWorld())) {
+            
             Player player = event.getPlayer();
+            
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.BED_BLOCK) {
+                if (event.getClickedBlock().getBiome() == Biome.HELL) {
+                    player.sendMessage(api.getUtil().C("MsgNetherBed"));
+                    event.setCancelled(true);
+                    return;
+                }
+            }
 
             PlotToClear ptc = api.getPlotLocked(block.getWorld().getName(), manager.getPlotId(block.getLocation()));
 
@@ -684,7 +694,7 @@ public class BukkitPlotListener implements Listener {
                             event.setCancelled(true);
                         }
                     } else {
-                        plot.resetExpire(manager.getMap(location).getDaysToExpiration());
+                        plot.resetExpire(manager.getMap(location).getDaysToExpiration()); //TODO: This eats up primary thread cpu time
                     }
                 }
             }
