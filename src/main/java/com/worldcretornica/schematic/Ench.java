@@ -20,6 +20,7 @@ public class Ench extends AbstractSchematicElement {
         return lvl;
     }
     
+    @Override
     public String toString()
     {
     	return "{" + this.getClass().getName() + 

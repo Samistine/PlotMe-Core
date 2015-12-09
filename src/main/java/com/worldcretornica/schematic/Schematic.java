@@ -88,6 +88,7 @@ public class Schematic extends AbstractSchematicElement {
         return originz;
     }
         
+    @Override
     public String toString() {
         return "{" + this.getClass().getName() + 
                 ": blocks=" + Sanitize(blocks) +

@@ -38,6 +38,7 @@ public class Item extends AbstractSchematicElement {
         return tag;
     }
     
+    @Override
     public String toString() {
         return "{" + this.getClass().getName() + 
                 ": count=" + Sanitize(count) + 
