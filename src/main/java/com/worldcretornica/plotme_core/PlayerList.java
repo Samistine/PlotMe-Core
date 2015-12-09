@@ -7,7 +7,6 @@ import java.util.UUID;
 
 public class PlayerList {
 
-    private PlotMe_Core api;
     private HashMap<String, UUID> playerList = new HashMap<>();
 
     public void put(String name) {
@@ -16,12 +15,6 @@ public class PlayerList {
 
     public void put(String name, UUID uuid) {
         playerList.put(name, uuid);
-    }
-
-    public String put(UUID uuid) {
-        String name = api.getServerBridge().getOfflinePlayer(uuid).getName();
-        playerList.put(name, uuid);
-        return name;
     }
 
     public UUID remove(String name) {

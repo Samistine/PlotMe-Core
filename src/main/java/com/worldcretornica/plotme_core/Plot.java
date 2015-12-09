@@ -195,7 +195,8 @@ public class Plot implements Cloneable {
 
     public void addAllowed(UUID uuid) {
         if (!isAllowed(uuid)) {
-            String name = allowed().put(uuid);
+            String name = plugin.getServerBridge().getOfflinePlayer(uuid).getName();
+            allowed().put(name, uuid);
             plugin.getSqlManager().addPlotAllowed(name, uuid, PlotMeCoreManager.getInstance().getIdX(getId()), PlotMeCoreManager.getInstance().getIdZ(getId()), getWorld());
         }
     }
@@ -209,7 +210,8 @@ public class Plot implements Cloneable {
 
     public void addDenied(UUID uuid) {
         if (!isDenied(uuid)) {
-            String name = denied().put(uuid);
+            String name = plugin.getServerBridge().getOfflinePlayer(uuid).getName();
+            denied().put(name, uuid);
             plugin.getSqlManager().addPlotDenied(name, uuid, PlotMeCoreManager.getInstance().getIdX(getId()), PlotMeCoreManager.getInstance().getIdZ(getId()), getWorld());
         }
     }
