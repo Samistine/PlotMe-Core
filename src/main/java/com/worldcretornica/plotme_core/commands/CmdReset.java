@@ -18,7 +18,7 @@ public class CmdReset extends PlotCommand {
     }
 
     public boolean exec(IPlayer player) {
-        if (player.hasPermission(PermissionNames.ADMIN_RESET) || player.hasPermission("PlotMe.use.reset")) {
+        if (player.hasPermission(PermissionNames.ADMIN_RESET) || player.hasPermission(PermissionNames.USER_RESET)) {
             IWorld world = player.getWorld();
             PlotMapInfo pmi = manager.getMap(world);
             if (manager.isPlotWorld(world)) {

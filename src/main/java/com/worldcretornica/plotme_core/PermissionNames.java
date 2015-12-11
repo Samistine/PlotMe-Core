@@ -5,6 +5,7 @@ public class PermissionNames {
     public static final String ADMIN_UNDENY = "PlotMe.admin.undeny";
     public static final String USER_UNDENY = "PlotMe.use.undeny";
     public static final String ADMIN_RESET = "PlotMe.admin.reset";
+    public static final String USER_RESET = "PlotMe.use.reset";
     public static final String ADMIN_AUCTION = "PlotMe.admin.auction";
     public static final String USE_AUCTION = "PlotMe.use.auction";
     public static final String ADMIN_ADDTIME = "PlotMe.admin.addtime";
