@@ -66,7 +66,8 @@ public class Vector implements Comparable<Vector> {
         return Math.sqrt(lengthSquared());
     }
 
-    @Override public String toString() {
+    @Override 
+    public String toString() {
         return "X: " + x + " Y: " + y + " Z: " + z;
     }
 
@@ -75,7 +76,8 @@ public class Vector implements Comparable<Vector> {
         return (int) (lengthSquared() - o.lengthSquared());
     }
 
-    @Override public boolean equals(Object obj) {
+    @Override 
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }

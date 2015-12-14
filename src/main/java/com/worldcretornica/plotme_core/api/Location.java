@@ -86,7 +86,8 @@ public class Location {
         return result;
     }
 
-    @Override public boolean equals(Object obj) {
+    @Override 
+    public boolean equals(Object obj) {
         if (obj instanceof Location) {
             Location location = (Location) obj;
             if (location.getWorld().equals(this.world) && location.getVector().equals(this.vector)) {

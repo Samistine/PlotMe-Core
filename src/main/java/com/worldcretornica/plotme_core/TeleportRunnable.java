@@ -13,7 +13,8 @@ public class TeleportRunnable implements Runnable {
         this.location = location;
     }
 
-    @Override public void run() {
+    @Override
+    public void run() {
         entity.setLocation(location);
     }
 }
