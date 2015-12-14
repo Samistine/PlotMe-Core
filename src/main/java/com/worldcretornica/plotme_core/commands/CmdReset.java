@@ -64,7 +64,7 @@ public class CmdReset extends PlotCommand {
                                         if (playerOwner.getName().equalsIgnoreCase(plot.getOwner())) {
                                             playerOwner.sendMessage(
                                                     C("WordPlot") + " " + id + " " + C("MsgOwnedBy") + " " + plot.getOwner() + " " + C("MsgWasReset")
-                                                        + " " + Util().moneyFormat(pmi.getClaimPrice(), true));
+                                                            + " " + Util().moneyFormat(pmi.getClaimPrice(), true));
                                         }
                                     } else {
                                         player.sendMessage("§c" + er.errorMessage);
