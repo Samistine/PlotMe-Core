@@ -9,6 +9,7 @@ import com.worldcretornica.plotme_core.api.IOfflinePlayer;
 import com.worldcretornica.plotme_core.api.IPlayer;
 import com.worldcretornica.plotme_core.api.IWorld;
 import com.worldcretornica.plotme_core.api.event.PlotRemoveDeniedEvent;
+import java.util.logging.Level;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class CmdUndeny extends PlotCommand {
@@ -17,10 +18,12 @@ public class CmdUndeny extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "undeny";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length != 2) {
             sender.sendMessage(getUsage());
@@ -91,13 +94,10 @@ public class CmdUndeny extends PlotCommand {
                             if (isAdvancedLogging()) {
                                 if (price != 0) {
                                     serverBridge.getLogger()
-                                            .info(player.getName() + " " + C("MsgUndeniedPlayer") + " " + args[1] + " " + C("MsgFromPlot") + " "
-                                                    + plot.getId().getID()
-                                                    + (" " + C("WordFor") + " " + price));
+                                            .log(Level.INFO, "{0} {1} {2} {3} {4}{5}", new Object[]{player.getName(), C("MsgUndeniedPlayer"), args[1], C("MsgFromPlot"), plot.getId().getID(), " " + C("WordFor") + " " + price});
                                 } else {
                                     serverBridge.getLogger()
-                                            .info(player.getName() + " " + C("MsgUndeniedPlayer") + " " + args[1] + " " + C("MsgFromPlot") + " "
-                                                    + plot.getId().getID());
+                                            .log(Level.INFO, "{0} {1} {2} {3} {4}", new Object[]{player.getName(), C("MsgUndeniedPlayer"), args[1], C("MsgFromPlot"), plot.getId().getID()});
                                 }
                             }
                         }

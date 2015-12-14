@@ -14,10 +14,12 @@ public class CmdReset extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "reset";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length > 1) {
             sender.sendMessage(getUsage());

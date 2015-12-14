@@ -8,6 +8,7 @@ import com.worldcretornica.plotme_core.api.ICommandSender;
 import com.worldcretornica.plotme_core.api.IPlayer;
 import com.worldcretornica.plotme_core.api.IWorld;
 import com.worldcretornica.plotme_core.api.event.PlotAddAllowedEvent;
+import java.util.logging.Level;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class CmdTrust extends PlotCommand {
@@ -16,10 +17,12 @@ public class CmdTrust extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "trust";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length != 2) {
             sender.sendMessage(getUsage());
@@ -82,14 +85,10 @@ public class CmdTrust extends PlotCommand {
                                 if (isAdvancedLogging()) {
                                     if (price == 0) {
                                         serverBridge.getLogger()
-                                                .info(player.getName() + " " + C("MsgAddedPlayer") + " " + args[1] + " " + C("MsgToPlot")
-                                                        + " "
-                                                        + plot.getId());
+                                                .log(Level.INFO, "{0} {1} {2} {3} {4}", new Object[]{player.getName(), C("MsgAddedPlayer"), args[1], C("MsgToPlot"), plot.getId()});
                                     } else {
                                         serverBridge.getLogger()
-                                                .info(player.getName() + " " + C("MsgAddedPlayer") + " " + args[1] + " " + C("MsgToPlot")
-                                                        + " "
-                                                        + plot.getId() + (" " + C("WordFor") + " " + price));
+                                                .log(Level.INFO, "{0} {1} {2} {3} {4}{5}", new Object[]{player.getName(), C("MsgAddedPlayer"), args[1], C("MsgToPlot"), plot.getId(), " " + C("WordFor") + " " + price});
                                     }
                                 }
                             }

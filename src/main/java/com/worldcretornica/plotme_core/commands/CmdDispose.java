@@ -8,6 +8,7 @@ import com.worldcretornica.plotme_core.api.ICommandSender;
 import com.worldcretornica.plotme_core.api.IPlayer;
 import com.worldcretornica.plotme_core.api.IWorld;
 import com.worldcretornica.plotme_core.api.event.PlotDisposeEvent;
+import java.util.logging.Level;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class CmdDispose extends PlotCommand {
@@ -16,10 +17,12 @@ public class CmdDispose extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "dispose";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length > 1) {
             sender.sendMessage(getUsage());
@@ -72,7 +75,7 @@ public class CmdDispose extends PlotCommand {
                             }
 
                             if (isAdvancedLogging()) {
-                                plugin.getLogger().info(player.getName() + " " + C("MsgDisposedPlot") + " " + plot.getId());
+                                plugin.getLogger().log(Level.INFO, "{0} {1} {2}", new Object[]{player.getName(), C("MsgDisposedPlot"), plot.getId()});
                             }
                         }
                     } else {

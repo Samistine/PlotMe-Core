@@ -15,10 +15,12 @@ public class CmdMove extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "move";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         IPlayer player = (IPlayer) sender;
         if (player.hasPermission(PermissionNames.ADMIN_MOVE)) {

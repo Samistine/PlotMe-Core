@@ -11,10 +11,12 @@ public class CmdResetExpired extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "resetexpired";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         IPlayer player = (IPlayer) sender;
         if (plugin.getWorldCurrentlyProcessingExpired() != null) {

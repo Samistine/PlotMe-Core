@@ -8,6 +8,7 @@ import com.worldcretornica.plotme_core.api.ICommandSender;
 import com.worldcretornica.plotme_core.api.IPlayer;
 import com.worldcretornica.plotme_core.api.IWorld;
 import com.worldcretornica.plotme_core.api.event.PlotSellChangeEvent;
+import java.util.logging.Level;
 
 public class CmdSell extends PlotCommand {
 
@@ -15,10 +16,12 @@ public class CmdSell extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "sell";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         IPlayer player = (IPlayer) sender;
         IWorld world = player.getWorld();
@@ -51,8 +54,8 @@ public class CmdSell extends PlotCommand {
 
                                         if (isAdvancedLogging()) {
                                             serverBridge.getLogger()
-                                                    .info(player.getName() + " " + C("MsgRemovedPlot") + " " + plot.getId() + " " + C(
-                                                            "MsgFromBeingSold"));
+                                                    .log(Level.INFO, "{0} {1} {2} {3}", new Object[]{player.getName(), C("MsgRemovedPlot"), plot.getId(), C(
+                                                            "MsgFromBeingSold")});
                                         }
                                     }
                                 } else {

@@ -23,10 +23,12 @@ public class CmdInfo extends PlotCommand {
         return Collections.singletonList("i");
     }
 
+    @Override
     public String getName() {
         return "info";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length > 1) {
             sender.sendMessage(getUsage());

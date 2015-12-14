@@ -15,10 +15,12 @@ public class CmdSetOwner extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "setowner";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length < 2 && args.length >= 3) {
             sender.sendMessage(getUsage());

@@ -24,10 +24,12 @@ public class CmdTP extends PlotCommand {
         return Collections.singletonList("teleport");
     }
 
+    @Override
     public String getName() {
         return "tp";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         IPlayer player = (IPlayer) sender;
         if (player.hasPermission(PermissionNames.ADMIN_TP)) {

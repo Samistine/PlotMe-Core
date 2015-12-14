@@ -9,10 +9,12 @@ public class CmdReload extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "reload";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length > 1) {
             sender.sendMessage(getUsage());

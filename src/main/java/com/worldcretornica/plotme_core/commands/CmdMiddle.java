@@ -19,6 +19,7 @@ public class CmdMiddle extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "middle";
     }
@@ -28,6 +29,7 @@ public class CmdMiddle extends PlotCommand {
         return Arrays.asList("center", "mid");
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length > 1) {
             sender.sendMessage(getUsage());

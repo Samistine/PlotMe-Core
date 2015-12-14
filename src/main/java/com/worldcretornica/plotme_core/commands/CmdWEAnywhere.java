@@ -4,6 +4,7 @@ import com.worldcretornica.plotme_core.PermissionNames;
 import com.worldcretornica.plotme_core.PlotMe_Core;
 import com.worldcretornica.plotme_core.api.ICommandSender;
 import com.worldcretornica.plotme_core.api.IPlayer;
+import java.util.logging.Level;
 
 public class CmdWEAnywhere extends PlotCommand {
 
@@ -11,10 +12,12 @@ public class CmdWEAnywhere extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "weanywhere";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length > 1) {
             sender.sendMessage(getUsage());
@@ -33,12 +36,12 @@ public class CmdWEAnywhere extends PlotCommand {
             if (manager.isPlayerIgnoringWELimit(player)) {
                 player.sendMessage(C("WorldEditAnywhere"));
                 if (isAdvancedLogging()) {
-                    plugin.getLogger().info(player.getName() + "enabled WorldEdit Anywhere");
+                    plugin.getLogger().log(Level.INFO, "{0} enabled WorldEdit Anywhere", player.getName());
                 }
             } else {
                 player.sendMessage("You can now worldedit in only your plots.");
                 if (isAdvancedLogging()) {
-                    plugin.getLogger().info(player.getName() + "disabled WorldEdit Anywhere");
+                    plugin.getLogger().log(Level.INFO, "{0} disabled WorldEdit Anywhere", player.getName());
                 }
             }
         } else {

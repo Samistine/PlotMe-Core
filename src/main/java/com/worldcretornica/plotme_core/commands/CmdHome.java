@@ -22,6 +22,7 @@ public class CmdHome extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "home";
     }
@@ -31,6 +32,7 @@ public class CmdHome extends PlotCommand {
         return Collections.singletonList("h");
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         IPlayer player = (IPlayer) sender;
         if (player.hasPermission(PermissionNames.USER_HOME)) {

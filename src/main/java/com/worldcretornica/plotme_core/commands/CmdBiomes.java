@@ -14,10 +14,12 @@ public class CmdBiomes extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "biomes";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         IPlayer player = (IPlayer) sender;
         if (manager.isPlotWorld(player)) {

@@ -15,10 +15,12 @@ public class CmdDoneList extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "donelist";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         IPlayer player = (IPlayer) sender;
         if (manager.isPlotWorld(player)) {

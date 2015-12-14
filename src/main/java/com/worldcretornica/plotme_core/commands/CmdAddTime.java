@@ -6,6 +6,7 @@ import com.worldcretornica.plotme_core.PlotMapInfo;
 import com.worldcretornica.plotme_core.PlotMe_Core;
 import com.worldcretornica.plotme_core.api.ICommandSender;
 import com.worldcretornica.plotme_core.api.IPlayer;
+import java.util.logging.Level;
 
 public class CmdAddTime extends PlotCommand {
 
@@ -13,10 +14,12 @@ public class CmdAddTime extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "addtime";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length > 1) {
             sender.sendMessage(getUsage());
@@ -39,7 +42,7 @@ public class CmdAddTime extends PlotCommand {
                     player.sendMessage(C("PlotExpirationReset"));
 
                     if (isAdvancedLogging()) {
-                        serverBridge.getLogger().info(name + " reset expiration on plot " + plot.getId().getID());
+                        serverBridge.getLogger().log(Level.INFO, "{0} reset expiration on plot {1}", new Object[]{name, plot.getId().getID()});
                     }
                 } else {
                     return true;

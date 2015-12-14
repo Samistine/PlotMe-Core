@@ -9,6 +9,7 @@ import com.worldcretornica.plotme_core.api.ICommandSender;
 import com.worldcretornica.plotme_core.api.IPlayer;
 import com.worldcretornica.plotme_core.api.IWorld;
 import com.worldcretornica.plotme_core.api.event.PlotBiomeChangeEvent;
+import java.util.logging.Level;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class CmdBiome extends PlotCommand {
@@ -17,10 +18,12 @@ public class CmdBiome extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "biome";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length > 4) {
             sender.sendMessage(getUsage());
@@ -85,12 +88,10 @@ public class CmdBiome extends PlotCommand {
                             if (isAdvancedLogging()) {
                                 if (price == 0) {
                                     serverBridge.getLogger()
-                                            .info(playerName + " " + C("MsgChangedBiome") + " " + plot.getId() + " " + C("WordTo") + " "
-                                                    + biome.get());
+                                            .log(Level.INFO, "{0} {1} {2} {3} {4}", new Object[]{playerName, C("MsgChangedBiome"), plot.getId(), C("WordTo"), biome.get()});
                                 } else {
                                     serverBridge.getLogger()
-                                            .info(playerName + " " + C("MsgChangedBiome") + " " + plot.getId() + " " + C("WordTo") + " "
-                                                    + biome.get() + (" " + C("WordFor") + " " + price));
+                                            .log(Level.INFO, "{0} {1} {2} {3} {4}{5}", new Object[]{playerName, C("MsgChangedBiome"), plot.getId(), C("WordTo"), biome.get(), " " + C("WordFor") + " " + price});
                                 }
                             }
                         }

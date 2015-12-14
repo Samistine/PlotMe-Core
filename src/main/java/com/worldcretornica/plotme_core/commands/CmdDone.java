@@ -6,6 +6,7 @@ import com.worldcretornica.plotme_core.PlotMe_Core;
 import com.worldcretornica.plotme_core.api.ICommandSender;
 import com.worldcretornica.plotme_core.api.IPlayer;
 import com.worldcretornica.plotme_core.api.event.PlotDoneChangeEvent;
+import java.util.logging.Level;
 
 public class CmdDone extends PlotCommand {
 
@@ -13,10 +14,12 @@ public class CmdDone extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "done";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         IPlayer player = (IPlayer) sender;
         if (player.hasPermission(PermissionNames.USER_DONE) || player.hasPermission(PermissionNames.ADMIN_DONE)) {
@@ -38,14 +41,14 @@ public class CmdDone extends PlotCommand {
                                 player.sendMessage(C("MsgUnmarkFinished"));
 
                                 if (isAdvancedLogging()) {
-                                    serverBridge.getLogger().info(name + " " + C("WordMarked") + " " + plot.getId() + " " + C("WordFinished"));
+                                    serverBridge.getLogger().log(Level.INFO, "{0} {1} {2} {3}", new Object[]{name, C("WordMarked"), plot.getId(), C("WordFinished")});
                                 }
                             } else {
                                 plot.setFinished(true);
                                 player.sendMessage(C("MsgMarkFinished"));
 
                                 if (isAdvancedLogging()) {
-                                    serverBridge.getLogger().info(name + " " + C("WordMarked") + " " + plot.getId() + " " + C("WordUnfinished"));
+                                    serverBridge.getLogger().log(Level.INFO, "{0} {1} {2} {3}", new Object[]{name, C("WordMarked"), plot.getId(), C("WordUnfinished")});
                                 }
                             }
                         }

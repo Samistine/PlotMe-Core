@@ -17,10 +17,12 @@ public class CmdPlotList extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "list";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         IPlayer player = (IPlayer) sender;
         if (player.hasPermission(PermissionNames.USER_LIST)) {

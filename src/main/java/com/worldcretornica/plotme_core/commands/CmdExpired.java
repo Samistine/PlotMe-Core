@@ -16,10 +16,12 @@ public class CmdExpired extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "expired";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         IPlayer player = (IPlayer) sender;
         if (player.hasPermission(PermissionNames.ADMIN_EXPIRED)) {

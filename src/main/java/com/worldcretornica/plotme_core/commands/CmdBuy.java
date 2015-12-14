@@ -8,6 +8,7 @@ import com.worldcretornica.plotme_core.api.IOfflinePlayer;
 import com.worldcretornica.plotme_core.api.IPlayer;
 import com.worldcretornica.plotme_core.api.IWorld;
 import com.worldcretornica.plotme_core.api.event.PlotBuyEvent;
+import java.util.logging.Level;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class CmdBuy extends PlotCommand {
@@ -16,10 +17,12 @@ public class CmdBuy extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "buy";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length > 1) {
             sender.sendMessage(getUsage());
@@ -89,9 +92,8 @@ public class CmdBuy extends PlotCommand {
 
                                                 if (isAdvancedLogging()) {
                                                     plugin.getLogger()
-                                                            .info(buyer + " " + C("MsgBoughtPlot") + " " + plot.getId().toString() + " " + C(
-                                                                    "WordFor") + " "
-                                                                    + cost);
+                                                            .log(Level.INFO, "{0} {1} {2} {3} {4}", new Object[]{buyer, C("MsgBoughtPlot"), plot.getId().toString(), C(
+                                                                    "WordFor"), cost});
                                                 }
                                             } else {
                                                 player.sendMessage(er.errorMessage);

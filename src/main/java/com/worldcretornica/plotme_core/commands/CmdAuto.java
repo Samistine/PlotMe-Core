@@ -17,10 +17,12 @@ public class CmdAuto extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "auto";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         final IPlayer player = (IPlayer) sender;
         if (player.hasPermission(PermissionNames.USER_AUTO)) {

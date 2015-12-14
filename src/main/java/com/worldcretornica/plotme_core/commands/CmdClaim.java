@@ -10,6 +10,7 @@ import com.worldcretornica.plotme_core.api.IOfflinePlayer;
 import com.worldcretornica.plotme_core.api.IPlayer;
 import com.worldcretornica.plotme_core.api.IWorld;
 import com.worldcretornica.plotme_core.api.event.PlotCreateEvent;
+import java.util.logging.Level;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class CmdClaim extends PlotCommand {
@@ -18,10 +19,12 @@ public class CmdClaim extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "claim";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         IPlayer player = (IPlayer) sender;
         if (player.hasPermission(PermissionNames.USER_CLAIM) || player.hasPermission(PermissionNames.ADMIN_CLAIM_OTHER)) {
@@ -101,10 +104,10 @@ public class CmdClaim extends PlotCommand {
 
                         if (isAdvancedLogging()) {
                             if (price == 0) {
-                                serverBridge.getLogger().info(player.getName() + " " + C("MsgClaimedPlot") + " " + id);
+                                serverBridge.getLogger().log(Level.INFO, "{0} {1} {2}", new Object[]{player.getName(), C("MsgClaimedPlot"), id});
                             } else {
                                 serverBridge.getLogger()
-                                        .info(player.getName() + " " + C("MsgClaimedPlot") + " " + id + (" " + C("WordFor") + " " + price));
+                                        .log(Level.INFO, "{0} {1} {2}{3}", new Object[]{player.getName(), C("MsgClaimedPlot"), id, " " + C("WordFor") + " " + price});
                             }
                         }
                     }

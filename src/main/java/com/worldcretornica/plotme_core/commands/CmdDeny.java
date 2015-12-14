@@ -12,6 +12,7 @@ import com.worldcretornica.plotme_core.api.event.PlotAddDeniedEvent;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 import java.util.List;
+import java.util.logging.Level;
 
 public class CmdDeny extends PlotCommand {
 
@@ -19,10 +20,12 @@ public class CmdDeny extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "deny";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length != 2) {
             sender.sendMessage(getUsage());
@@ -117,8 +120,7 @@ public class CmdDeny extends PlotCommand {
 
                             if (isAdvancedLogging()) {
                                 plugin.getLogger()
-                                        .info(player.getName() + " " + C("MsgDeniedPlayer") + " " + args[1] + " " + C("MsgToPlot") + " "
-                                                + plot.getId().getID());
+                                        .log(Level.INFO, "{0} {1} {2} {3} {4}", new Object[]{player.getName(), C("MsgDeniedPlayer"), args[1], C("MsgToPlot"), plot.getId().getID()});
                             }
                         }
                     }

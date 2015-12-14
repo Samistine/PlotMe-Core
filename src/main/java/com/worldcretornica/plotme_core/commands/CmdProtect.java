@@ -8,6 +8,7 @@ import com.worldcretornica.plotme_core.api.ICommandSender;
 import com.worldcretornica.plotme_core.api.IPlayer;
 import com.worldcretornica.plotme_core.api.IWorld;
 import com.worldcretornica.plotme_core.api.event.PlotProtectChangeEvent;
+import java.util.logging.Level;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class CmdProtect extends PlotCommand {
@@ -16,10 +17,12 @@ public class CmdProtect extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "protect";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length > 1) {
             sender.sendMessage(getUsage());
@@ -50,7 +53,7 @@ public class CmdProtect extends PlotCommand {
                             player.sendMessage(C("MsgPlotNoLongerProtected"));
 
                             if (isAdvancedLogging()) {
-                                serverBridge.getLogger().info(player.getName() + " " + C("MsgUnprotectedPlot") + " " + plot.getId().getID());
+                                serverBridge.getLogger().log(Level.INFO, "{0} {1} {2}", new Object[]{player.getName(), C("MsgUnprotectedPlot"), plot.getId().getID()});
                             }
                         }
                     } else {
@@ -88,7 +91,7 @@ public class CmdProtect extends PlotCommand {
                             player.sendMessage(C("MsgPlotNowProtected"));
 
                             if (isAdvancedLogging()) {
-                                serverBridge.getLogger().info(player.getName() + " " + C("MsgProtectedPlot") + " " + plot.getId());
+                                serverBridge.getLogger().log(Level.INFO, "{0} {1} {2}", new Object[]{player.getName(), C("MsgProtectedPlot"), plot.getId()});
                             }
                         }
                     }

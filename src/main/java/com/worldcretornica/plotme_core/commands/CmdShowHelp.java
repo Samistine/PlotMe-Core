@@ -16,10 +16,12 @@ public class CmdShowHelp extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "help";
     }
 
+    @Override
     public boolean execute(ICommandSender player, String[] args) {
         int page = 1;
         if (args.length > 1) {

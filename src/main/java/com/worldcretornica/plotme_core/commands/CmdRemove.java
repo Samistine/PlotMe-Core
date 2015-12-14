@@ -21,10 +21,12 @@ public class CmdRemove extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "remove";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length != 2) {
             sender.sendMessage(getUsage());

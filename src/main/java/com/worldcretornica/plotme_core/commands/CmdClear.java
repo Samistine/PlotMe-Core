@@ -9,6 +9,7 @@ import com.worldcretornica.plotme_core.api.ICommandSender;
 import com.worldcretornica.plotme_core.api.IPlayer;
 import com.worldcretornica.plotme_core.api.IWorld;
 import com.worldcretornica.plotme_core.api.event.PlotClearEvent;
+import java.util.logging.Level;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class CmdClear extends PlotCommand {
@@ -17,10 +18,12 @@ public class CmdClear extends PlotCommand {
         super(instance);
     }
 
+    @Override
     public String getName() {
         return "clear";
     }
 
+    @Override
     public boolean execute(ICommandSender sender, String[] args) {
         if (args.length > 1) {
             sender.sendMessage(getUsage());
@@ -76,11 +79,11 @@ public class CmdClear extends PlotCommand {
 
                             if (isAdvancedLogging()) {
                                 if (price == 0) {
-                                    serverBridge.getLogger().info(playerName + " " + C("MsgClearedPlot") + " " + plot.getId().getID());
+                                    serverBridge.getLogger().log(Level.INFO, "{0} {1} {2}", new Object[]{playerName, C("MsgClearedPlot"), plot.getId().getID()});
                                 } else {
                                     serverBridge.getLogger()
-                                            .info(playerName + " " + C("MsgClearedPlot") + " " + plot.getId().getID() + (" " + C("WordFor") + " "
-                                                    + price));
+                                            .log(Level.INFO, "{0} {1} {2}{3}", new Object[]{playerName, C("MsgClearedPlot"), plot.getId().getID(), " " + C("WordFor") + " "
+                                                    + price});
                                 }
                             }
                         }
