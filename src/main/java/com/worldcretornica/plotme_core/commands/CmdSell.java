@@ -66,8 +66,7 @@ public class CmdSell extends PlotCommand {
                                             price = Double.parseDouble(args[1]);
                                         } catch (Exception e) {
                                             player.sendMessage(
-                                                    C("WordUsage") + ": §c /plotme sell <" + C("WordAmount") + ">§r " + C("WordExample")
-                                                    + ": §c/plotme sell 200");
+                                                    C("WordUsage") + ": §c /plotme sell <" + C("WordAmount") + ">§r " + C("WordExample") + ": §c/plotme sell 200");
                                             return true;
                                         }
                                     }
