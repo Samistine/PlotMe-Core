@@ -55,8 +55,7 @@ public class CmdSell extends PlotCommand {
                                         player.sendMessage(C("MsgPlotNoLongerSale"));
 
                                         if (isAdvancedLogging()) {
-                                            serverBridge.getLogger()
-                                                    .info(player.getName() + " " + C("MsgRemovedPlot") + " " + id + " " + C("MsgFromBeingSold"));
+                                            serverBridge.getLogger().info(player.getName() + " " + C("MsgRemovedPlot") + " " + id + " " + C("MsgFromBeingSold"));
                                         }
                                     }
                                 } else {
