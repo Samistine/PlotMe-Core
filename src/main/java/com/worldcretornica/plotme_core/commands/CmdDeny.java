@@ -105,12 +105,10 @@ public class CmdDeny extends PlotCommand {
                                     if (isAdvancedLogging()) {
                                         if (price == 0) {
                                             serverBridge.getLogger()
-                                                    .info(player.getName() + " " + C("MsgDeniedPlayer") + " " + denied + " " + C("MsgToPlot") + " "
-                                                            + id);
+                                                    .info(player.getName() + " " + C("MsgDeniedPlayer") + " " + denied + " " + C("MsgToPlot") + " " + id);
                                         } else {
                                             serverBridge.getLogger()
-                                                    .info(player.getName() + " " + C("MsgDeniedPlayer") + " " + denied + " " + C("MsgToPlot") + " "
-                                                            + id + (" " + C("WordFor") + " " + price));
+                                                    .info(player.getName() + " " + C("MsgDeniedPlayer") + " " + denied + " " + C("MsgToPlot") + " " + id + (" " + C("WordFor") + " " + price));
                                         }
                                     }
                                 }
