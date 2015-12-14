@@ -44,55 +44,19 @@ public class CmdInfo extends PlotCommand {
                     player.sendMessage(C("NoPlotFound"));
                     return true;
                 }
-                player.sendMessage("Internal ID: " + plot.getInternalID());
+                
+                //player.sendMessage("Internal ID: " + plot.getInternalID());
                 player.sendMessage(
                         "ID: " + plot.getId().getID() + " " + C("InfoOwner", serverBridge.getOfflinePlayer(plot.getOwnerId()).getName()) + " " + C
                                 ("InfoBiome", plot
                                         .getBiome()));
                 player.sendMessage("Likes: " + plot.getLikes());
                 player.sendMessage("Created: " + plot.getCreatedDate());
-                final String neverExpire = C("InfoExpire") + ": " + C("WordNever");
-                if (plot.getExpiredDate() == null) {
-                    if (plot.isFinished()) {
-                        if (plot.isProtected()) {
-                            player.sendMessage(neverExpire
-                                    + " " + C("InfoFinished") + ": " + C("WordYes")
-                                    + " " + C("InfoProtected") + ": " + C("WordYes"));
-                        } else {
-                            player.sendMessage(neverExpire
-                                    + " " + C("InfoFinished") + ": " + C("WordYes")
-                                    + " " + C("InfoProtected") + ": " + C("WordNo"));
-                        }
-                    } else {
-                        if (plot.isProtected()) {
-                            player.sendMessage(neverExpire
-                                    + " " + C("InfoFinished") + ": " + C("WordNo")
-                                    + " " + C("InfoProtected") + ": " + C("WordYes"));
-                        } else {
-                            player.sendMessage(neverExpire
-                                    + " " + C("InfoFinished") + ": " + C("WordNo")
-                                    + " " + C("InfoProtected") + ": " + C("WordNo"));
-                        }
-                    }
-                } else if (plot.isProtected()) {
-                    if (plot.isFinished()) {
-                        player.sendMessage(neverExpire
-                                + " " + C("InfoFinished") + ": " + C("WordYes")
-                                + " " + C("InfoProtected") + ": " + C("WordYes"));
-                    } else {
-                        player.sendMessage(neverExpire
-                                + " " + C("InfoFinished") + ": " + C("WordNo")
-                                + " " + C("InfoProtected") + ": " + C("WordYes"));
-                    }
-                } else if (plot.isFinished()) {
-                    player.sendMessage(C("InfoExpire") + ": " + plot.getExpiredDate()
-                            + " " + C("InfoFinished") + ": " + C("WordYes")
-                            + " " + C("InfoProtected") + ": " + C("WordNo"));
-                } else {
-                    player.sendMessage(C("InfoExpire") + ": " + plot.getExpiredDate()
-                            + " " + C("InfoFinished") + ": " + C("WordNo")
-                            + " " + C("InfoProtected") + ": " + C("WordNo"));
-                }
+                
+                player.sendMessage(
+                        C("InfoExpire") + ": " + (plot.getExpiredDate() != null ? plot.getExpiredDate() : C("WordNever"))
+                        + " " + C("InfoFinished") + ": " + (plot.isFinished() ? C("WordYes") : C("WordNo"))
+                        + " " + C("InfoProtected") + ": " + (plot.isProtected()? C("WordYes") : C("WordNo")));
 
                 if (!plot.getMembers().isEmpty()) {
                     StringBuilder builder = new StringBuilder("Members: ");
@@ -122,11 +86,7 @@ public class CmdInfo extends PlotCommand {
                 }
 
                 if (manager.isEconomyEnabled(world)) {
-                    if (plot.isForSale()) {
-                        player.sendMessage(C("InfoForSale") + ": " + plot.getPrice());
-                    } else {
-                        player.sendMessage(C("InfoForSale") + ": " + C("WordNo"));
-                    }
+                     player.sendMessage(C("InfoForSale") + ": " + (plot.isForSale() ? plot.getPrice() : C("WordNo")));
                 }
 
                 player.sendMessage(C("WordBottom") + ": " + plot.getPlotBottomLoc().toString());
