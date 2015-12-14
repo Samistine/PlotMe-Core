@@ -65,7 +65,7 @@ public class BukkitPlotDenyListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         BukkitPlayer player = (BukkitPlayer) plugin.wrapPlayer(event.getPlayer());
 
-        if (manager.isPlotWorld(player)) {
+        if (manager.isPlotWorld(player) && !player.hasPermission(PermissionNames.ADMIN_BYPASSDENY)) {
             String id = manager.getPlotId(player);
 
             if (!id.isEmpty()) {
