@@ -93,7 +93,7 @@ public class CmdSell extends PlotCommand {
                                             if (isAdvancedLogging()) {
                                                 serverBridge.getLogger()
                                                         .info(player.getName() + " " + C("MsgPutOnSalePlot") + " " + id + " " + C("WordFor") + " "
-                                                              + price);
+                                                                + price);
                                             }
                                         }
                                     }

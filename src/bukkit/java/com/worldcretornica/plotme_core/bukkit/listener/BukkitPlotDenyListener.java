@@ -13,7 +13,7 @@ public class BukkitPlotDenyListener implements Listener {
 
     private final PlotMe_CorePlugin plugin;
     private final PlotMeCoreManager manager;
-    
+
     public BukkitPlotDenyListener(PlotMe_CorePlugin instance) {
         plugin = instance;
         manager = PlotMeCoreManager.getInstance();
