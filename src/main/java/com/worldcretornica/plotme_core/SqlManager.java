@@ -872,7 +872,7 @@ public class SqlManager {
                 }
 
                 statementAllowed = conn.prepareStatement("SELECT * FROM plotmeAllowed WHERE LOWER(world) = ? AND idX = ? AND idZ = ?");
-                statementAllowed.setString(1, world.);
+                statementAllowed.setString(1, world.toLowerCase());
                 statementAllowed.setInt(2, idX);
                 statementAllowed.setInt(3, idZ);
 
